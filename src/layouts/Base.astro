@@ -1,0 +1,75 @@
+---
+import '@fontsource/averia-serif-libre/latin-300.css';
+import '@fontsource/averia-serif-libre/latin-300-italic.css';
+import '@fontsource/averia-serif-libre/latin-400.css';
+import '../styles/global.css';
+import Mark from '../components/Mark.astro';
+import Socials from '../components/Socials.astro';
+import { site } from '../data/site';
+
+interface Props {
+  title?: string;
+}
+
+const { title } = Astro.props;
+const pageTitle = title ? `${title} · ${site.title}` : site.title;
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={site.description} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={site.description} />
+    <meta name="theme-color" content="#141d28" />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+    <script is:inline>document.documentElement.classList.add('js');</script>
+  </head>
+  <body>
+    <header class="top">
+      <a href="/" aria-label="alma project, inicio">
+        <Mark name="wordmark" class="top__word" />
+        <Mark name="logo" class="top__logo" />
+      </a>
+      <nav aria-label="Principal">
+        <a href="/manifiesto/">Manifiesto</a>
+        <a href="/#galeria">Galería</a>
+        <a class="top__cta" href="/#apoyar">Apoyar</a>
+      </nav>
+      <button class="burger" type="button" aria-label="Abrir menú" aria-haspopup="dialog" aria-controls="menu" data-menu-open>
+        <span></span><span></span><span></span>
+      </button>
+    </header>
+
+    <dialog class="sheet" id="menu" aria-label="Menú" data-menu>
+      <div class="sheet__top">
+        <a href="/" aria-label="alma project, inicio"><Mark name="logo" /></a>
+        <button class="burger burger--close" type="button" aria-label="Cerrar menú" data-menu-close>
+          <span></span><span></span>
+        </button>
+      </div>
+      <nav aria-label="Móvil">
+        <a href="/manifiesto/">Manifiesto</a>
+        <a href="/#galeria">Galería</a>
+        <a href="/#apoyar">Apoyar</a>
+      </nav>
+      <div class="sheet__end">
+        <Mark name="flourish" />
+        <a href={`mailto:${site.email}`}>{site.email}</a>
+      </div>
+    </dialog>
+
+    <main><slot /></main>
+
+    <footer class="end">
+      <Mark name="monogram" />
+      <Socials />
+    </footer>
+
+    <script src="../scripts/main.ts"></script>
+  </body>
+</html>

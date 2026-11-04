@@ -1,0 +1,16 @@
+{
+  "name": "alma-project",
+  "type": "module",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview"
+  },
+  "dependencies": {
+    "@fontsource/averia-serif-libre": "^5.3.0",
+    "astro": "^7.4.5",
+    "sharp": "^0.35.5"
+  }
+}

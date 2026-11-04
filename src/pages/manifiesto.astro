@@ -1,0 +1,13 @@
+---
+import Base from '../layouts/Base.astro';
+import { manifesto } from '../data/site';
+const [first, ...rest] = manifesto;
+---
+
+<Base title="Manifiesto">
+  <article class="letter">
+    <h1 class="label">Manifiesto</h1>
+    <p class="letter__first">{first}</p>
+    {rest.map((p) => <p>{p}</p>)}
+  </article>
+</Base>

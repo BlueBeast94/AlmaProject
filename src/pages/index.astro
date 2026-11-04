@@ -1,0 +1,104 @@
+---
+import { getImage } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import Mark from '../components/Mark.astro';
+import entremes from '../assets/photos/entremes-004.jpg';
+import bandeja from '../assets/photos/bandeja.jpg';
+import Carousel from '../components/Carousel.astro';
+import { hero, method, rooms, site } from '../data/site';
+
+const panelSrcset = (id: string) =>
+  [900, 1400, 2000]
+    .map((w) => {
+      const h = Math.round((w * 3) / 4);
+      return `https://images.unsplash.com/${id}?auto=format&fit=crop&q=72&w=${w}&h=${h} ${w}w`;
+    })
+    .join(', ');
+
+const webp = (src: ImageMetadata) => getImage({ src, format: 'webp', quality: 86 });
+const entremesImg = await webp(entremes);
+const bandejaImg = await webp(bandeja);
+---
+
+<Base>
+  <section class="open" data-open>
+    <div class="open__stage">
+      <div class="open__door" aria-hidden="true">
+        <img
+          src={`https://images.unsplash.com/${hero.photo}?auto=format&fit=crop&q=74&w=1600&h=1000`}
+          srcset={[900, 1600, 2400].map((w) => `https://images.unsplash.com/${hero.photo}?auto=format&fit=crop&q=74&w=${w}&h=${Math.round(w / 1.6)} ${w}w`).join(', ')}
+          sizes="100vw"
+          alt=""
+          width="1600"
+          height="1000"
+        />
+      </div>
+      <Mark name="flourish" class="open__up" />
+      <h1 class="open__name"><span class="sr">alma project</span><Mark name="wordmark" /></h1>
+      <p class="open__line">Una invitación a mirar la <em>libertad</em> desde nuevas perspectivas.</p>
+      <Mark name="flourish" class="open__down" />
+      <p class="label open__cue">Arte · Libertad · Mercado · Acción</p>
+    </div>
+  </section>
+
+  <section class="rooms" aria-label="Arte, Libertad, Mercado, Acción" data-rooms>
+    {
+      rooms.map((room, i) => (
+        <button class:list={['room', { 'is-open': i === 0 }]} type="button" aria-expanded={i === 0 ? 'true' : 'false'}>
+          <img
+            src={`https://images.unsplash.com/${room.photo}?auto=format&fit=crop&q=72&w=1400&h=1050`}
+            srcset={panelSrcset(room.photo)}
+            sizes="(max-width: 760px) 100vw, 64vw"
+            alt={room.alt}
+            width="1400"
+            height="1050"
+            loading="lazy"
+            style={`object-position:${room.pos}`}
+          />
+          <span class="room__text">
+            <span class="room__word">{room.letter}<span class="room__rest">{room.rest}</span></span>
+            <span class="room__line">{room.line}</span>
+          </span>
+        </button>
+      ))
+    }
+  </section>
+
+  <section class="method">
+    <ol>
+      {
+        method.map((m) => (
+          <li data-in>
+            <h2>{m.word}</h2>
+            <p>{m.line}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <Carousel />
+
+  <section class="moment">
+    <div class="moment__photo" data-in>
+      <img src={entremesImg.src} alt="Cartera de carey y una copa de vino sobre una pila de libros." width={entremes.width} height={entremes.height} loading="lazy" />
+    </div>
+    <div data-in>
+      <h2>Entremés #004</h2>
+      <p><em>Un momento, un concepto.</em></p>
+      <p class="label">Próximamente</p>
+    </div>
+  </section>
+
+  <section class="circle" id="apoyar">
+    <div class="circle__tray" data-in>
+      <img src={bandejaImg.src} alt="Bandeja de plata con la tarjeta de alma project." width={bandeja.width} height={bandeja.height} loading="lazy" />
+      <div class="circle__card" aria-hidden="true"><Mark name="monogram" /></div>
+    </div>
+    <div class="circle__text" data-in>
+      <p class="label">Founding Circle</p>
+      <h2>Un grupo reducido de personas comprometidas con una plataforma <em>independiente.</em></h2>
+      <a class="action" href={`mailto:${site.email}?subject=Founding%20Circle`}>Sumarse</a>
+    </div>
+  </section>
+</Base>
